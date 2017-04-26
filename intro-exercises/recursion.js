@@ -130,5 +130,53 @@ console.log([1, 2, 3, 4, 5, 7].bsearch(6));
 
 
 function greedyChange(value, coins) {
-  
+  if (value < coins[coins.length - 1]) {
+    return [];
+  }
+
+  let change = [];
+
+  for (let i = 0; i < coins.length; i++) {
+    if (coins[i] <= value) {
+      change.push(coins[i]);
+      var subChange = greedyChange(value - coins[i], coins);
+      break;
+    }
+  }
+
+  return change.concat(subChange);
 }
+
+console.log("--greedy change--");
+console.log(greedyChange(14, [10, 7, 1]));
+
+function betterChange(value, coins) {
+  if (value < coins[coins.length - 1]) {
+    return [];
+  }
+
+  let bestChange = [];
+
+  for (let i = 0; i < coins.length; i++) {
+
+    let currentChange = [];
+    let subChange;
+
+    if (coins[i] <= value) {
+      currentChange.push(coins[i]);
+      subChange = betterChange(value - coins[i], coins.slice(i));
+    } else {
+      continue;
+    }
+
+    currentChange = currentChange.concat(subChange);
+
+    if (bestChange.length === 0 || bestChange.length > currentChange.length) {
+      bestChange = currentChange;
+    }
+  }
+  return bestChange;
+}
+
+console.log("--best change--");
+console.log(betterChange(14, [10, 7, 1]));
