@@ -180,3 +180,55 @@ function betterChange(value, coins) {
 
 console.log("--best change--");
 console.log(betterChange(14, [10, 7, 1]));
+
+Array.prototype.mergeSort = function mergeSort() {
+
+  if (this.length < 2) {
+    return this;
+  }
+
+  let midIdx = Math.floor(this.length / 2);
+
+  let leftHalf = this.slice(0, midIdx);
+  let rightHalf = this.slice(midIdx);
+
+  return merge(leftHalf.mergeSort(), rightHalf.mergeSort());
+
+  function merge(left, right) {
+    let sorted = [];
+
+    while (left.length > 0 && right.length > 0) {
+      if (left[0] > right[0]) {
+        sorted.push(right.shift());
+      } else {
+        sorted.push(left.shift());
+      }
+    }
+
+    return sorted.concat(left.concat(right));
+  }
+};
+
+console.log("--mergeSort--");
+let a = [2, 6, 6, 3, 3, 66, 32,3];
+console.log(a);
+console.log(a.mergeSort());
+
+
+Array.prototype.subsets = function subsets() {
+  if (this.length === 0) {
+    return [[]];
+  }
+  let lowerSubs = this.slice(0, this.length - 1).subsets();
+  let lastVal = this[this.length - 1];
+  let upperSubs = lowerSubs.map((arr) => {
+    return arr.concat(lastVal);
+  });
+  return lowerSubs.concat(upperSubs);
+};
+
+console.log("--subsets--");
+console.log([].subsets());
+console.log([1].subsets());
+console.log([1, 2].subsets());
+console.log([1, 2, 3].subsets());
