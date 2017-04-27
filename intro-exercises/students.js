@@ -8,7 +8,21 @@ Student.prototype.name = function name() {
   return `${this.firstName} ${this.lastName}`;
 };
 
+Student.prototype.hasConflict = function name(newCourse) {
+
+  for (let i = 0; i < this.courses.length; i++) {
+    let course = this.courses[i];
+    if (course.conflictsWith(newCourse)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 Student.prototype.enroll = function enroll(course) {
+  if(this.hasConflict(course)) {
+    throw `Scheduling conflict (${course.name})`;
+  }
   if (!this.courses.includes(course)) {
     this.courses.push(course);
   }
